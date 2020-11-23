@@ -21,10 +21,11 @@ vert_ti = [[60, 19], [119, 75]]
 vert_xil = [[514, 120], [566, 288]]
 
 
-img_dst = img_real
-vert = vert_real
+img_dst = img_ti
+vert = vert_ti
 img = logo_3m
-plt.imshow(img_real)
+# %%
+plt.imshow(img_ti)
 # %%
 #plt.imshow(logo_marv)
 #logo_marv.shape
@@ -132,15 +133,39 @@ dst = cv2.cvtColor(dst, cv2.COLOR_GRAY2RGB)
 src = cv2.cvtColor(src, cv2.COLOR_GRAY2RGB)
 
 # %%
-
+plt.imshow(src)
 
 # %%
 hist_full = cv2.calcHist([dst],[0],None,[256],[0,256])
 #plt.hist(dst.ravel(),256,[0,256]); plt.show()
-#plt.plot(range(0,256),hist_full[:,0])
+plt.plot(range(0,256),hist_full[:,0])
+
+# %%
+for i in range(0,255):
+    if hist_full[i]>1e+02:
+        text_intensity = i
+
+print(text_intensity)
 # %%
 idx_peak =np.argmax(hist_full)
 idx_peak
+# %%
+## Alternate code for alpha composting
+logo_mask = (src[:,:,0]>150)*255
+plt.imshow(logo_mask)
+#alpha =idx_peak/255
+alpha =text_intensity/255
+print(alpha)
+
+
+for i in range(vert[0][1],vert[1][1]):
+    for j in range(vert[0][0],vert[1][0]):
+        if logo_mask[i-vert[0][1],j-vert[0][0]]==255:
+            dst[i,j] = alpha* src[i-vert[0][1],j-vert[0][0]][0]
+
+plt.imshow(dst)
+# %%
+logo_mask[0,0]
 # %% Place to change image variace based scaling
 
 #img_var_cap = 255/(np.mean(dst)+2*np.std(dst))
@@ -171,8 +196,8 @@ plt.imshow(thresh_mask)
 #mask_sc = 
 
 mask_sc = idx_peak*np.ones(src.shape, np.uint8)
-print(mask_sc[:,:,0].shape)
-plt.imshow(mask_sc[:,:,0])
+print(mask_sc[:,:].shape)
+plt.imshow(mask_sc[:,:])
 
 # %%
 
