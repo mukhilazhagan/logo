@@ -21,8 +21,8 @@ vert_ti = [[60, 19], [119, 75]]
 vert_xil = [[514, 120], [566, 288]]
 
 
-img_dst = img_ti
-vert = vert_ti
+img_dst = img_xil
+vert = vert_xil
 img = logo_3m
 # %%
 plt.imshow(img_ti)
