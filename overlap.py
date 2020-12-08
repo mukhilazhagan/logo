@@ -9,13 +9,6 @@ import matplotlib.pyplot as plt
 import os
 import csv
 
-'''
-Requirements:
-1) It should go through all available PCB Annotated Images (49-63 or more if you have it ready)
-2) For each PCB identify if Logo annotation overlaps with IC annotation
-3) For all overlapping Logo and IC annotations, it should call a function called 'logo_create' with 2 lists as arguments- First list will have vertices of IC, second list will have vertices of Logo.
-side note: you don't have to write the function, i have both the algorithms ready, just create a function with a placeholder print function that will say something
-'''
 
 inputICs = './component-annotations'
 inputLogos = './ocr-annotations'
