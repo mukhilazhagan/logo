@@ -1,7 +1,10 @@
+# %%
 #CV and ML Libraries
 import cv2
 from PIL import Image
+from logo_blend import logo_create
 import numpy as np
+import matplotlib.pyplot as plt
 
 import os
 import csv
@@ -17,10 +20,13 @@ side note: you don't have to write the function, i have both the algorithms read
 inputICs = './component-annotations'
 inputLogos = './ocr-annotations'
 
-def logo_create(icVertices,logoVertices):
+'''
+def logo_create(icVertices,logoVertices,fileName):
     print("Inside logo_create")
+    print("Full File Name:"+"./pcb_images/"+fileName+".png")
     print("IC List: "+str(icVertices))
     print("Logo List: "+str(logoVertices))
+'''
 
 def extractVertices(vertices):
     vertices = vertices.replace('[','')
@@ -33,49 +39,16 @@ def extractVertices(vertices):
     return v
 
 def isLogoInIC(vertIC,vertLogo):
-    #print("Vert IC:"+str(vertIC))
-    #print("Vert Logo:"+str(vertLogo))
-
     vertICX = [int(vertIC[0].strip()),int(vertIC[2].strip()),int(vertIC[4].strip()),int(vertIC[6].strip())]
     vertICY = [int(vertIC[1].strip()),int(vertIC[3].strip()),int(vertIC[5].strip()),int(vertIC[7].strip())]
 
     vertICX.sort()
     vertICY.sort()
-
-
-    #print("Vert IC X:"+str(vertICX))
-    #print("Vert IC Y:"+str(vertICY))
-
-
     vertLogoX = [int(vertLogo[0].strip()),int(vertLogo[2].strip()),int(vertLogo[4].strip()),int(vertLogo[6].strip())]
     vertLogoY = [int(vertLogo[1].strip()),int(vertLogo[3].strip()),int(vertLogo[5].strip()),int(vertLogo[7].strip())]
-
-
-
     vertLogoX.sort()
     vertLogoY.sort()
 
-    #print("Vert Logo X:"+str(vertLogoX))
-    #print("Vert Logo Y:"+str(vertLogoY))
-
-
-
-    '''
-    x1, y1: 0,1
-    x2, y2: 4,5
-
-    return vertIC[0] <= vertLogo[0] and vertIC[1] <= vertLogo[1] and vertIC[4] >= vertLogo[4] and vertIC[5] >= vertLogo[5]
-    '''
-
-    '''
-    Vertices of a Region:
-    #Condition for returning True
-    x1 IC <= x1 Logo
-    y1 IC <= y1 Logo
-
-    x2 IC >= x2 Logo
-    y2 IC >= y2 Logo
-    '''
     return vertICX[0] <= vertLogoX[0] and vertICY[2] >= vertLogoY[2] and vertICX[2] >= vertLogoX[2] and vertICY[0] <= vertLogoY[0]
 
 
@@ -130,12 +103,6 @@ def identifyOverlaps():
             #2
 
 
-
-        #print("IC List: "+str(icList))
-        #print("Logo List: "+str(logoList))
-
-        #This Block executes once per Component File.
-
         ics = []
         logos = []
 
@@ -174,7 +141,10 @@ def identifyOverlaps():
             auditFile.close()
 
 
-            logo_create(ics,logos)
+            logo_create(ics,logos,fileName)
+            return # Debug
 
 if __name__ == '__main__':
     identifyOverlaps()
+
+# %%
